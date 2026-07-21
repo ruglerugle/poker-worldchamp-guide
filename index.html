@@ -21,7 +21,6 @@ html,body{max-width:100vw;overflow-x:hidden}
   --paper:#f6f1e2;--paper2:#fffdf6;--ink:#241d12;--muted:#8a7a5c;--line:#ddd0ad;
   --gold:#d9a441;--gold-dark:#a6742a;
   --felt:#0f6b3f;--felt-dark:#083c23;
-  --ok:#2f9e5c;--ok-bg:#e6f5ec;--ok-bd:#8fd1ab;
   --shadow:0 16px 40px rgba(0,0,0,.35);
   --r:10px;--f:system-ui,-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;
 }
@@ -35,10 +34,6 @@ body{font-family:var(--f);color:var(--ink);font-weight:600;min-height:100vh;
 .brand{display:flex;flex-direction:column;gap:2px;min-width:220px}
 .brand-title{font-size:22px;font-weight:950;letter-spacing:.02em;color:var(--gold);text-shadow:0 2px 0 rgba(0,0,0,.4)}
 .brand-sub{font-size:12.5px;font-weight:800;color:#d9ece7}
-.head-progress-wrap{flex:1;min-width:160px;display:flex;flex-direction:column;gap:4px}
-.head-progress-label{font-size:11.5px;color:#cfe4de;font-weight:800}
-.head-progress{height:14px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,.3)}
-.head-progress-fill{height:100%;width:0;background:linear-gradient(90deg,#f3c47a,var(--gold-dark));border-radius:999px;transition:width .4s}
 .head-reset{padding:9px 14px;border:1.5px solid rgba(255,255,255,.55);border-radius:8px;background:rgba(0,0,0,.2);color:#fff;font-size:12.5px;font-weight:800;cursor:pointer;white-space:nowrap}
 .head-reset:hover{background:rgba(255,255,255,.12)}
 a.head-reset{text-decoration:none;display:inline-flex;align-items:center}
@@ -65,7 +60,6 @@ a.head-reset{text-decoration:none;display:inline-flex;align-items:center}
   color:#c8ded7;cursor:pointer;user-select:none;touch-action:manipulation;min-width:0}
 .side-item:hover{background:rgba(255,255,255,.06)}
 .side-item.active{background:rgba(217,164,65,.2);box-shadow:inset 3px 0 0 var(--gold)}
-.side-item.locked{opacity:.45;cursor:not-allowed}
 .side-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
 .side-text{min-width:0}
 .side-main{font-size:12.5px;font-weight:900;line-height:1.3;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -146,13 +140,10 @@ a.head-reset{text-decoration:none;display:inline-flex;align-items:center}
   .dialog-row.right .dialog-bubble::after{left:-8px;right:auto;border-left:0;border-right:9px solid var(--paper)}
 }
 
-/* Point box (mission-box design reused for "read this section" gating) */
+/* Point box */
 .mission-box{background:linear-gradient(180deg,#fff8e6,#fdefc9);border:1px solid #e3c877;border-radius:10px;padding:12px 14px;margin-bottom:14px}
 .mission-label{font-size:11.5px;font-weight:950;color:#8a6614;margin-bottom:3px}
 .mission-text{font-size:13.5px;color:#3a2c08;font-weight:700;line-height:1.6}
-.mission-status{display:inline-block;margin-top:8px;padding:3px 11px;border-radius:999px;font-size:11.5px;font-weight:900;
-  background:#eee1bd;color:#8a6614}
-.mission-status.ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-bd)}
 
 /* Stage nav / buttons */
 .stage-nav{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;flex-wrap:wrap}
@@ -224,13 +215,8 @@ a.head-reset{text-decoration:none;display:inline-flex;align-items:center}
       <div class="brand-title">🏆 POKER WORLD GUIDE</div>
       <div class="brand-sub">― 世界大会エントリーから賞金まで完全ガイド ―</div>
     </div>
-    <div class="head-progress-wrap">
-      <div class="head-progress-label" id="progress-label">既読 0 / 7</div>
-      <div class="head-progress"><div class="head-progress-fill" id="progress-fill"></div></div>
-    </div>
     <div class="header-actions">
       <a class="head-reset home-badge" href="https://ruglerugle.github.io/" title="クエスト集トップへ" aria-label="クエスト集トップへ">🧭</a>
-      <button class="head-reset" id="btn-reset-all">🔄 最初から</button>
       <button class="head-reset" id="head-nav-toggle" title="目次の表示切替">☰ ナビ</button>
     </div>
   </header>
@@ -334,7 +320,7 @@ function mountFlowStepper(root){
 /* =====================================================================
    Chapter 0: 世界大会ってどんなもの？
    ===================================================================== */
-function buildOverview(root, ctx){
+function buildOverview(root){
   root.innerHTML = `
     <div class="ref-head">📋 「ポーカーの世界大会」の代表格 WSOP</div>
     ${renderRefList([
@@ -349,13 +335,12 @@ function buildOverview(root, ctx){
       「世界大会」と一言で言っても、WSOPのように歴史と規模で別格の存在から、ツアー形式のWPT/EPT、超高額バイインのTritonまで性格の異なる大会が並立している。この後の章では、最も知名度の高いWSOPメインイベントを軸にエントリー方法・大会の流れ・賞金の仕組みを見ていく。
     </div>
   `;
-  renderDoneButton(root, ctx);
 }
 
 /* =====================================================================
    Chapter 1: エントリー方法
    ===================================================================== */
-function buildEntry(root, ctx){
+function buildEntry(root){
   root.innerHTML = `
     <div class="ref-head">🎟️ 参加権を得る2つのルート</div>
     <div class="action-grid">
@@ -379,13 +364,12 @@ function buildEntry(root, ctx){
       ・オンライン登録やオンラインサテライトは、居住地域によって参加できるサービスが異なる(規制のある地域からは利用不可の場合がある)ため、事前に対象サービスの利用規約を確認しておきたい。
     </div>
   `;
-  renderDoneButton(root, ctx);
 }
 
 /* =====================================================================
    Chapter 2: 参加者の流れ・大会形式
    ===================================================================== */
-function buildStructure(root, ctx){
+function buildStructure(root){
   root.innerHTML = `
     <div class="ref-head">📖 メインイベントの進行(例)</div>
     <div id="flow-diagram"></div>
@@ -403,13 +387,12 @@ function buildStructure(root, ctx){
     </div>
   `;
   mountFlowStepper(root);
-  renderDoneButton(root, ctx);
 }
 
 /* =====================================================================
    Chapter 3: 賞金の仕組み
    ===================================================================== */
-function buildPrize(root, ctx){
+function buildPrize(root){
   root.innerHTML = `
     <div class="ref-head">💰 賞金プールの考え方</div>
     <div class="scenario-info">
@@ -443,13 +426,12 @@ function buildPrize(root, ctx){
       米国で開催される大会でアメリカ非居住者が賞金を獲得した場合、原則として支払い時に一定割合(目安30%)が源泉徴収される。租税条約により還付や税額控除の余地がある場合もあるが、取り扱いは個別事情によって異なるため、実際に高額な賞金を得た場合は税理士など専門家に確認することをおすすめする。
     </div>
   `;
-  renderDoneButton(root, ctx);
 }
 
 /* =====================================================================
    Chapter 4: 世界の主要大会一覧
    ===================================================================== */
-function buildCompare(root, ctx){
+function buildCompare(root){
   root.innerHTML = `
     <div class="ref-head">🌍 世界の主要ポーカー大会比較</div>
     ${renderCmpTable(
@@ -467,13 +449,12 @@ function buildCompare(root, ctx){
       バイイン額や開催規模は大会・年度により変動するため、参考情報として捉え、参加を検討する際は必ず各大会の公式サイトで最新の日程・条件を確認しよう。
     </div>
   `;
-  renderDoneButton(root, ctx);
 }
 
 /* =====================================================================
    Chapter 5: 挑戦するための準備・心得
    ===================================================================== */
-function buildTips(root, ctx){
+function buildTips(root){
   root.innerHTML = `
     <div class="ref-head">🎯 挑戦前に押さえておきたいこと</div>
     ${renderRefList([
@@ -485,27 +466,6 @@ function buildTips(root, ctx){
       {name:'渡航準備を早めに', desc:'海外開催の大会に参加する場合、パスポートの有効期限やESTA・ビザの取得、宿泊先の確保は早めに済ませておきたい。'},
     ])}
   `;
-  renderDoneButton(root, ctx);
-}
-
-/* =====================================================================
-   shared "read this chapter" gating button (mission-box completion)
-   ===================================================================== */
-function renderDoneButton(root, ctx){
-  const wrap = document.createElement('div');
-  wrap.innerHTML = `<div class="stage-nav"><button class="btn btn-primary" id="btn-mark-done">✅ このチャプターを読んだ</button></div>`;
-  root.appendChild(wrap);
-  const btn = qs('#btn-mark-done', root);
-  if(ctx.isDone()){
-    btn.disabled = true;
-    btn.textContent = '✅ 読了済み';
-  } else {
-    btn.addEventListener('click', ()=>{
-      ctx.complete();
-      btn.disabled = true;
-      btn.textContent = '✅ 読了済み';
-    });
-  }
 }
 
 /* =====================================================================
@@ -580,34 +540,16 @@ const CHAPTERS = [
   },
 ];
 
-/* ---------- shared state / persistence ---------- */
-const STORE_KEY = 'pokerWorldGuideProgress';
-const state = { unlocked:1, cleared:new Set(), currentIndex:0 };
-
-function loadProgress(){
-  try{
-    const raw = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
-    if(raw){
-      state.unlocked = raw.unlocked || 1;
-      state.cleared = new Set(raw.cleared || []);
-    }
-  }catch(e){}
-  if (new URLSearchParams(location.search).has('all')) state.unlocked = CHAPTERS.length;
-}
-function saveProgress(){
-  localStorage.setItem(STORE_KEY, JSON.stringify({unlocked:state.unlocked, cleared:[...state.cleared]}));
-}
+/* ---------- shared state ---------- */
+const state = { currentIndex:0 };
 
 /* ---------- sidebar / header ---------- */
 function renderSidebar(){
   const list = qs('#side-list');
   list.innerHTML = CHAPTERS.map((s,i)=>{
-    const locked = i > state.unlocked - 1;
-    const cleared = state.cleared.has(i);
     const active = i === state.currentIndex;
-    const icon = cleared ? '✅' : locked ? '🔒' : '📖';
-    return `<div class="side-item ${active?'active':''} ${locked?'locked':''}" data-index="${i}">
-      <span class="side-icon">${icon}</span>
+    return `<div class="side-item ${active?'active':''}" data-index="${i}">
+      <span class="side-icon">📖</span>
       <span class="side-text">
         <div class="side-main">第${i+1}章 ${s.title}</div>
         <div class="side-sub">${s.sub}</div>
@@ -615,23 +557,9 @@ function renderSidebar(){
     </div>`;
   }).join('');
   list.querySelectorAll('.side-item').forEach(item=>{
-    item.addEventListener('click', ()=>{
-      const i = Number(item.dataset.index);
-      if(i > state.unlocked - 1) return;
-      mountStage(i);
-    });
+    item.addEventListener('click', ()=> mountStage(Number(item.dataset.index)));
   });
-
-  qs('#progress-label').textContent = `既読 ${state.cleared.size} / ${CHAPTERS.length}`;
-  qs('#progress-fill').style.width = (state.cleared.size / CHAPTERS.length * 100) + '%';
 }
-
-qs('#btn-reset-all').addEventListener('click', ()=>{
-  if(!confirm('既読状況をすべてリセットして最初からやり直しますか？')) return;
-  state.unlocked = 1; state.cleared = new Set();
-  saveProgress();
-  mountStage(0);
-});
 
 /* ---------- sidebar drawer toggle (mobile off-canvas / tablet icon-rail) ---------- */
 function toggleSidebar(){ qs('#app-shell').classList.toggle('side-collapsed'); }
@@ -653,17 +581,15 @@ function mountStage(index){
     <div class="mission-box">
       <div class="mission-label">🎯 この章で分かること</div>
       <div class="mission-text">${meta.missionText}</div>
-      <div class="mission-status" id="mission-status">${state.cleared.has(index) ? '既読' : '未読'}</div>
     </div>
     <div class="stage-play" id="stage-play"></div>
     <div class="stage-nav">
       <button class="btn" id="btn-prev" ${index===0 ? 'disabled':''}>◀ 前の章へ</button>
-      <button class="btn btn-primary" id="btn-next" ${state.cleared.has(index) ? '' : 'disabled'}>
+      <button class="btn btn-primary" id="btn-next">
         ${index === CHAPTERS.length-1 ? 'まとめを見る ▶' : '次の章へ ▶'}
       </button>
     </div>
   `;
-  if(state.cleared.has(index)) qs('#mission-status').classList.add('ok');
 
   qs('#btn-prev').addEventListener('click', ()=>{ if(index>0) mountStage(index-1); });
   qs('#btn-next').addEventListener('click', ()=>{
@@ -671,21 +597,7 @@ function mountStage(index){
     else mountStage(index+1);
   });
 
-  const ctx = {
-    isDone(){ return state.cleared.has(index); },
-    complete(){
-      if(state.cleared.has(index)) return;
-      state.cleared.add(index);
-      state.unlocked = Math.max(state.unlocked, index+2);
-      saveProgress();
-      const statusEl = qs('#mission-status');
-      statusEl.textContent = '既読';
-      statusEl.classList.add('ok');
-      qs('#btn-next').removeAttribute('disabled');
-      renderSidebar();
-    },
-  };
-  meta.build(qs('#stage-play'), ctx);
+  meta.build(qs('#stage-play'));
   renderSidebar();
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -707,11 +619,7 @@ function showEnding(){
       <button class="btn btn-primary" id="btn-replay">↺ はじめから読みなおす</button>
     </div>
   `;
-  qs('#btn-replay').addEventListener('click', ()=>{
-    state.unlocked = 1; state.cleared = new Set();
-    saveProgress();
-    mountStage(0);
-  });
+  qs('#btn-replay').addEventListener('click', ()=> mountStage(0));
   state.currentIndex = -1;
   renderSidebar();
 }
@@ -732,8 +640,7 @@ function renderBookRecommend(){
 }
 
 /* ---------- boot ---------- */
-loadProgress();
-mountStage(Math.min(state.currentIndex, state.unlocked-1));
+mountStage(0);
 renderBookRecommend();
 </script>
 </body>
